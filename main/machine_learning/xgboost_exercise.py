@@ -1,7 +1,7 @@
 # train a model with gradient boosting
 
 # set path
-path = "C:/Users/johnf/PycharmProjects/MachineLearning/input/"
+path = "/input/"
 
 import pandas as pd
 from sklearn.model_selection import train_test_split

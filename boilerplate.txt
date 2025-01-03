@@ -1,0 +1,31 @@
+# prevent floating-point rounding errors
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+# Setup plotting
+import matplotlib.pyplot as plt
+plt.style.use('seaborn-v0_8-whitegrid') # replace "seaborn" with "seaborn-v0_8"
+# Set Matplotlib defaults
+plt.rc('figure', autolayout=True)
+plt.rc('axes', labelweight='bold', labelsize='large',
+       titleweight='bold', titlesize=18, titlepad=10)
+plt.rc('animation', html='html5')
+
+import numpy as np
+import pandas as pd
+
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import make_column_transformer
+from sklearn.model_selection import GroupShuffleSplit
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras import callbacks
+
+# set path, read in data
+# in directory main:
+path = "C:/Users/johnf/PycharmProjects/MachineLearning/input/"
+filename = pd.read_csv(path + 'filename.csv') # FILENAME
+
+# kaggle competitions directory path:
+path = "C:/Users/johnf/PycharmProjects/MachineLearning/kaggle_competitions/data/"
+filename = pd.read_csv(path + 'filename.csv') # FILENAME
