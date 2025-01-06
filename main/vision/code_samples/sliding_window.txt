@@ -1,0 +1,78 @@
+from tensorflow import keras
+from tensorflow.keras import layers
+
+model = keras.Sequential([
+    layers.Conv2D(filters=64,
+                  kernel_size=3,
+                  strides=1,
+                  padding='same',
+                  activation='relu'),
+    layers.MaxPool2D(pool_size=2,
+                     strides=1,
+                     padding='same')
+    # More layers follow
+])
+
+# Exploring Sliding Windows
+# load image
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+plt.rc('figure', autolayout=True)
+plt.rc('axes', labelweight='bold', labelsize='large',
+       titleweight='bold', titlesize=18, titlepad=10)
+plt.rc('image', cmap='magma')
+
+image = circle([64, 64], val=1.0, r_shrink=3)
+image = tf.reshape(image, [*image.shape, 1])
+# Bottom sobel
+kernel = tf.constant(
+    [[-1, -2, -1],
+     [0, 0, 0],
+     [1, 2, 1]],
+)
+
+show_kernel(kernel)
+
+
+Trace back all the connections from some neuron and eventually you reach the input image. All of the input pixels a neuron is connected to is that neuron's receptive field. The receptive field just tells you which parts of the input image a neuron receives information from.
+
+As we've seen, if your first layer is a convolution with 3x3
+ kernels, then each neuron in that layer gets input from a 3x3
+ patch of pixels (except maybe at the border).
+
+What happens if you add another convolutional layer with 3x3
+ kernels?
+Now trace back the connections from the neuron at top and you can see that it's connected to a 5x5
+ patch of pixels in the input (the bottom layer): each neuron in the 3x3
+ patch in the middle layer is connected to a 3x3
+ input patch, but they overlap in a 5x5
+ patch. So that neuron at top has a 5x5
+ receptive field.
+
+Now, if you added a third convolutional layer with a (3, 3) kernel, what receptive field would its neurons have?
+7x7
+
+So why stack layers like this? Three (3, 3) kernels have 27 parameters, while one (7, 7) kernel has 49, though they both create the same receptive field. This stacking-layers trick is one of the ways convnets are able to create large receptive fields without increasing the number of parameters too much. You'll see how to do this yourself in the next lesson!
+
+Convolutional networks turn out to be useful not only (two-dimensional) images, but also on things like time-series (one-dimensional) and video (three-dimensional).
+
+We've seen how convolutional networks can learn to extract features from (two-dimensional) images. It turns out that convnets can also learn to extract features from things like time-series (one-dimensional) and video (three-dimensional).
+
+In this (optional) exercise, we'll see what convolution looks like on a time-series.
+
+The time series we'll use is from Google Trends. It measures the popularity of the search term "machine learning" for weeks from January 25, 2015 to January 15, 2020.
+
+1D arrays kernels example
+
+detrend = tf.constant([-1, 1], dtype=tf.float32)
+
+average = tf.constant([0.2, 0.2, 0.2, 0.2, 0.2], dtype=tf.float32)
+
+spencer = tf.constant([-3, -6, -5, 3, 21, 46, 67, 74, 67, 46, 32, 3, -5, -6, -3], dtype=tf.float32) / 320
+
+Convolution on a sequence works just like convolution on an image. The difference is just that a sliding window on a sequence only has one direction to travel -- left to right -- instead of the two directions on an image. And just like before, the features picked out depend on the pattern on numbers in the kernel.
+
+Can you guess what kind of features these kernels extract?
+
+

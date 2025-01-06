@@ -1,0 +1,24 @@
+Kaggle API documentation
+https://github.com/Kaggle/kaggle-api
+
+Installation
+pip install kaggle
+
+default Linux local user install is ~/.local/bin
+default Windows local user install is $PYTHON_HOME/Scripts
+
+Authentication
+user account -> settings -> create new token
+
+
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("ryanholbrook/car-or-truck")
+
+print("Path to dataset files:", path)
+
+
+Interacting With Datasets with CLI
+kaggle datasets list -s [KEYWORD]
+kaggle datasets download -d [DATASET]
